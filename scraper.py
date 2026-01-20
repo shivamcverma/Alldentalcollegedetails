@@ -2518,7 +2518,7 @@ def parse_faculty_reviews(driver,URLS):
     else:
         html = None
 
-    soup = BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(driver.page_source, "html.parser")
 
     data = {
         "overall_rating": "",
