@@ -2500,14 +2500,23 @@ def parse_faculty_reviews(driver,URLS):
     except:
         pass
 
-    driver.execute_script(
-        "arguments[0].scrollIntoView({block:'center'});", section
-    )
-    time.sleep(0.5)
+    section = None
+    try:
+        section = driver.find_element(By.ID, "faculty-section")
+    except Exception as e:
+        print(f"Faculty section not found: {e}")
 
-    html = driver.execute_script(
-        "return arguments[0].innerHTML;", section
-    )
+    if section:
+        try:
+            driver.execute_script("arguments[0].scrollIntoView({block:'center'});", section)
+            time.sleep(0.5)
+            html = driver.execute_script("return arguments[0].innerHTML;", section)
+            # Continue parsing html
+        except Exception as e:
+            print(f"Error scraping faculty section: {e}")
+            html = None
+    else:
+        html = None
 
     soup = BeautifulSoup(html, "html.parser")
 
